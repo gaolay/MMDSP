@@ -1,0 +1,57 @@
+	.nlist
+*
+* LzzConst.mac X68k LZZ version 0.53 Constant (c)1992-94 NOVA
+*
+	.offset	4
+_LzzSize:
+	.ds.l	1		* ファイルサイズ
+_LzzCheck:
+	.ds.l	1		* チェック用文字列　'LzzR'
+_ref_data:
+	.ds.l	1		* ref_data( ZDFADR, BUFADR )
+_ext_data:
+	.ds.l	1		* ext_data( ENTADR, OUTADR )
+
+	.offset	0
+ZNumOfData:
+	.ds.w	1		* データ数
+ZKind:
+	.ds.w	1		* 種別
+ZTopAdr:
+	.ds.l	1		* データ先頭アドレス
+ZSize:
+	.ds.l	1		* 展開後のサイズ
+
+	.text
+ZNext		equ	10	* 次のデータの情報へのオフセット
+
+ZDF_ZMD		equ	0	* ここからＺＤＦの種別関係
+ZDF_MDX		equ	1
+ZDF_MDN		equ	2
+ZDF_MDZ		equ	3
+ZDF_ZMS		equ	4	* OPM も含む
+ZDF_MDI		equ	5
+ZDF_MDR		equ	6
+
+ZDF_PCM		equ	$20	* ex) ZPD = ZDF_ZMD + ZDF_PCM
+
+ZDF_MDD		equ	$41
+
+MDF_MCP		equ	0	* ここからＭＤＦの種別関係
+MDF_RCP		equ	1
+MDF_SNG		equ	2
+MDF_SNG2	equ	3	* ミュージ郎Ｖ２以降のデータも含む
+MDF_MST		equ	4	* Music studio
+MDF_MDI		equ	5
+MDF_MID		equ	6	* SMF
+MDF_SEQ		equ	7
+MDF_MCC		equ	8
+MDF_MM2		equ	9
+MDF_R36		equ	10
+
+MDF_TONE	equ	$20	* ex) CM6 = MDF_RCP + MDF_TONE
+MDF_GSD		equ	$30
+
+MDF_WRD		equ	$40
+
+	.list
