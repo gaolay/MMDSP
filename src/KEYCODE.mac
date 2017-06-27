@@ -1,0 +1,133 @@
+*
+*ÉLÅ[ÉRÅ[ÉhíËã`
+*
+*					1992 11/26(Thu) 16:45:41
+
+		.nlist
+
+*ÉtÉãÉLÅ[è„ïî
+__BREAK		.equ	$61
+__COPY		.equ	$62
+__F1		.equ	$63
+__F2		.equ	$64
+__F3		.equ	$65
+__F4		.equ	$66
+__F5		.equ	$67
+__F6		.equ	$68
+__F7		.equ	$69
+__F8		.equ	$6a
+__F9		.equ	$6b
+__F10		.equ	$6c
+
+*ÉtÉãÉLÅ[
+__ESC		.equ	$01
+__1		.equ	$02
+__2		.equ	$03
+__3		.equ	$04
+__4		.equ	$05
+__5		.equ	$06
+__6		.equ	$07
+__7		.equ	$08
+__8		.equ	$09
+__9		.equ	$0a
+__0		.equ	$0b
+__Å|		.equ	$0c
+__ÅO		.equ	$0d
+__Åè		.equ	$0e
+__BS		.equ	$0f
+__TAB		.equ	$10
+__Q		.equ	$11
+__W		.equ	$12
+__E		.equ	$13
+__R		.equ	$14
+__T		.equ	$15
+__Y		.equ	$16
+__U		.equ	$17
+__I		.equ	$18
+__O		.equ	$19
+__P		.equ	$1a
+__Åó		.equ	$1b
+__Åm		.equ	$1c
+__CR		.equ	$1d
+__A		.equ	$1e
+__S		.equ	$1f
+__D		.equ	$20
+__F		.equ	$21
+__G		.equ	$22
+__H		.equ	$23
+__J		.equ	$24
+__K		.equ	$25
+__L		.equ	$26
+__ÅG		.equ	$27
+__ÅF		.equ	$28
+__Ån		.equ	$29
+__Z		.equ	$2a
+__X		.equ	$2b
+__C		.equ	$2c
+__V		.equ	$2d
+__B		.equ	$2e
+__N		.equ	$2f
+__M		.equ	$30
+__ÅC		.equ	$31
+__ÅD		.equ	$32
+__Å^		.equ	$33
+__ÅQ		.equ	$34
+__CTRL		.equ	$71
+__SHIFT		.equ	$70
+__À◊∂ﬁ≈		.equ	$5f
+__XF1		.equ	$55
+__XF2		.equ	$56
+__SPACE		.equ	$35
+__XF3		.equ	$57
+__XF4		.equ	$58
+__XF5		.equ	$59
+__ëSäp		.equ	$60
+
+*ÉJÅ[É\Éãà⁄ìÆÉLÅ[è„ïî
+__∂≈		.equ	$5a
+__€∞œ		.equ	$5b
+__∫∞ƒﬁ		.equ	$5c
+
+*ÉJÅ[É\Éãà⁄ìÆÉLÅ[é¸ï”
+__HOME		.equ	$36
+__INS		.equ	$5e
+__DEL		.equ	$37
+__RUP		.equ	$38
+__RDOWN		.equ	$39
+__UNDO		.equ	$3a
+__UP		.equ	$3c
+__LEFT		.equ	$3b
+__RIGHT		.equ	$3d
+__DOWN		.equ	$3e
+__OPT1		.equ	$72
+__OPT2		.equ	$73
+
+*ÉeÉìÉLÅ[è„ïî
+__CAPS		.equ	$5d
+__ãLçÜ		.equ	$52
+__ìoò^		.equ	$53
+__HELP		.equ	$54
+
+*ÉeÉìÉLÅ[
+__CLR		.equ	$3f
+__ÅMÅ^		.equ	$40
+__ÅMÅñ		.equ	$41
+__ÅMÅ|		.equ	$42
+__ÅMÇV		.equ	$43
+__ÅMÇW		.equ	$44
+__ÅMÇX		.equ	$45
+__ÅMÅ{		.equ	$46
+__ÅMÇS		.equ	$47
+__ÅMÇT		.equ	$48
+__ÅMÇU		.equ	$49
+__ÅMÅÅ		.equ	$4a
+__ÅMÇP		.equ	$4b
+__ÅMÇQ		.equ	$4c
+__ÅMÇR		.equ	$4d
+__ENTER		.equ	$4e
+__ÅMÇO		.equ	$4f
+__ÅMÅC		.equ	$50
+__ÅMÅD		.equ	$51
+
+		.list
+

@@ -1,0 +1,187 @@
+*==================================================
+* RCD 構造体定義(2.92以降)
+*==================================================
+
+TRK_NUM		equ	18		* トラック数
+CHL_NUM		equ	34 		* チャネル数
+					*  32/33 は未使用
+
+		.offset	0
+
+title		.ds.b	4		* "RCD "
+version		.ds.b	4		* "N.NN"
+staymark	.ds.l	1
+
+data_valid	.ds.b	1		* RCP/MCP 有効時 1
+tone_valid	.ds.b	1		* CM6/MTD 有効時 1
+word_valid	.ds.b	1		* WRD 有効時 1
+fmt		.ds.b	1		* MCP:0 RCP:1
+
+data_adr	.ds.l	1		* MCP/RCP address
+tone_adr	.ds.l	1		* MTD/CM6 address
+word_adr	.ds.l	1		* WRD address
+gsd_adr		.ds.l	1		* GSD address		*(v2.92)
+
+init		.ds.l	1		* パラメータ初期化	* void (v2.70)
+setup		.ds.l	1		* 音色データ書き込み	* void (v2.70)
+begin		.ds.l	1		* 演奏開始		* void (v2.70)
+end		.ds.l	1		* 演奏終了		* void (v2.70)
+
+md_put		.ds.l	1		* MIDI 1 byte 出力	* void (v2.70)
+md_get		.ds.l	1		* MIDI 1 byte 入力　(-1)入力なし *(v2.70)
+md_put2		.ds.l	1		* MIDI 1 byte 出力(dual) *void (v2.92)
+dummy0		.ds.l	1
+
+act		.ds.l	1		* 1:演奏中
+sts		.ds.l	1		* 0:RUN 1:STOP 2:SEARCH 3:CUE	* *(v2.70)
+tar_trk		.ds.l	1		* TARGET TRACK
+tar_bar		.ds.l	1		* TARGET BAR
+*80
+trk_mask	.ds.b	TRK_NUM		* TRACK MASK
+
+tempo		.ds.l	1		* 現在のテンポ
+basetempo	.ds.l	1		* 元のテンポ
+
+totalcount	.ds.l	1		* 音符ファイル長
+filename	.ds.b	30		* 音符ファイル名
+tonename	.ds.b	30		* 音色ファイル名
+
+*170
+ptr		.ds.l	TRK_NUM		* ｶﾚﾝﾄﾄﾗｯｸﾎﾟｲﾝﾀ		*  (v2.50)
+bufcap		.ds.l	1		* バッファ容量		*  (v2.70)
+
+MIDI_avl	.ds.l	1		* MIDI 出力有効(trk.no)*  (v2.80)
+MIDI_req	.ds.b	16		* MIDI 出力要求バッファ*  (v2.80)
+		* (80) (ch) ... 		:ﾁｬﾈﾙﾁｪﾝｼﾞ
+		* (90) (ke) (ve)		:ﾉｰﾄｵﾝ		*  (v2.92)
+		* (b0) (xx) (xx)		:ｺﾝﾄﾛｰﾙﾁｪﾝｼﾞ
+		* (c0) (xx) ... 		:ﾌﾟﾛｸﾞﾗﾑﾁｪﾝｼﾞ
+		* (e0) (xx) (xx)		:ﾋﾟｯﾁﾍﾞﾝﾀﾞｰ
+		* (f0) (hh) (mm) (ll) (xx)	:ﾒﾓﾘﾗｲﾄ
+		* (f1) (hh) (mm) (ll) (xx) (id)	:ﾒﾓﾘﾗｲﾄ  *(v2.92)
+
+LA_VOL		.ds.b	1		* LA part master vol    *(v2.80)
+LA_RVB_Mode	.ds.b	1		* LA part reverb Mode   *(v2.80)
+LA_RVB_Time	.ds.b	1		* LA part reverb Time   *(v2.80)
+LA_RVB_Level	.ds.b	1		* LA part reverb Level  *(v2.80)
+
+PCM_VOL		.ds.b	1		* PCM part master vol   *(v2.80)
+PCM_RVB_Mode	.ds.b	1		* PCM part reverb Mode  *(v2.80)
+PCM_RVB_Time	.ds.b	1		* PCM part reverb Time  *(v2.80)
+PCM_RVB_Level	.ds.b	1		* PCM part reverb Level *(v2.80)
+
+filter_mode	.ds.l	1		* 0:無効 1:PRGのみ 2:LA/PCMあり * (v2.90)
+filter_data	.ds.l	1		* Filter Dataアドレス	* (v2.90)
+
+play_mode	.ds.l	1		* 0:normal 1:slow 2:fast 3:slow2 4:fast2 * (v2.92)
+mute_mode	.ds.l	1		* 0:off 1:cm64 2:sc55 * (v2.92)
+init_mode	.ds.l	1		* 0:off 1:cm64 2:sc55 3:cm+sc * (v2.92)
+scan_mode	.ds.b	1		* key scan flag 0:off 1:on
+rsmd_mode	.ds.b	1		* midi port flag 0:midi 1:midi/rs 2:rs
+fade_time	.ds.w	1		* fade out speed
+fade_count	.ds.b	1		* fade out start flag 128:start 0:end
+moduletype	.ds.b	1		* panel display 0:cm64 1:sc55 2:cm+sc
+fade_mode	.ds.b	1		* fade out mode 0:exclusive a:volume 2:expres
+timer_mode	.ds.b	1		* RS-MIDI timer mode 0:OPM Timer-A 1:OPM Timer-B
+midi_clock	.ds.b	1		* MIDI clock out 0:disable 1:enable
+put_mode	.ds.b	1		* md_put port mode 0:normal 1:midi 2:rs
+rcd_type	.ds.b	1		* 0:midi+rs232c 1:midi+polyphon 2:polyphon only
+
+dummyA		.ds.b	44-24		* 拡張用リザーブ
+
+mt32_mode	.ds.b	1		* mt-32 mode
+exc_wait	.ds.l	1		* exclusive send wait
+tim_all		.ds.b	1		* timbre trans mode
+
+gsd_valid	.ds.b	1		* GSD 有効時 1		  *(v2.92)
+gsdname		.ds.b	30		* GSDファイル名
+
+wordcap		.ds.l	1		* word バッファ容量	  *(v2.92)
+
+mix_adr		.ds.l	1		* mix out buff address	  *(v2.92)
+
+dummyC		.ds.b	24		* 拡張用リザーブ
+
+mix_out		.ds.l	1		* MIX OUT  (size)
+
+dummyD		.ds.b	28-18		* 拡張用リザーブ
+
+GS_VOL		.ds.b	1		* GS part master vol   * (v2.93)
+GS_PAN		.ds.b	1		* GS part master pan   * (v2.93)
+
+GS_RVB_Macro	.ds.b	1		* リバーブマクロ	* (v2.93)
+GS_RVB_Char	.ds.b	1		* リバーブ・キャラクター・コントロール
+GS_RVB_Prelpf	.ds.b	1		* リバーブ・ＰＲＥ・ＬＰＦ・コントロール
+GS_RVB_Level	.ds.b	1		* リバーブ・レベル・コントロール
+GS_RVB_Time	.ds.b	1		* リバーブ・タイム・コントロール
+GS_RVB_Deley	.ds.b	1		* リバーブ・DELEY・FEEDBACK・コントロール
+GS_RVB_Send	.ds.b	1		* REVERB SEND LEVEL TO CHOURUS
+dummy1		.ds.b	1
+
+GS_CHO_Macro	.ds.b	1		* コーラスマクロ
+GS_CHO_Prelpf	.ds.b	1		* コーラス・ＰＲＥ・ＬＰＦ・コントロール
+GS_CHO_Level	.ds.b	1		* コーラス・レベル・コントロール
+GS_CHO_Feed	.ds.b	1		* コーラス・フィード・バック
+GS_CHO_Delay	.ds.b	1		* コーラス・Ｄｅｌａｙ・コントロール
+GS_CHO_Rate	.ds.b	1		* コーラス・Ｒａｔｅ・コントロール
+GS_CHO_Depth	.ds.b	1		* コーラス・Ｄｅｐｔｈ・コントロール
+GS_CHO_Send	.ds.b	1		* CHORUS SEND LEVEL TO REVERB
+
+active		.ds.b	TRK_NUM		* トラック有効
+midich		.ds.b	TRK_NUM		* MIDI CH
+top		.ds.l	TRK_NUM		* トラックデータ先頭
+
+noteptr		.ds.l	1		* ﾉｰﾄﾗﾝﾆﾝｸﾞﾎﾟｲﾝﾀ
+note_adr	.ds.l	1		* ﾉｰﾄﾗﾝﾆﾝｸﾞﾊﾞｯﾌｧｱﾄﾞﾚｽ
+
+flg_vel		.ds.b	TRK_NUM		* VELOCITY ON ﾌﾗｸﾞ
+flg_off		.ds.b	TRK_NUM		* VELOCITY OFF ﾌﾗｸﾞ
+flg_act		.ds.b	1		* ACTIVE OFF ﾌﾗｸﾞ
+flg_bar		.ds.b	1		* BAR 変更 ﾌﾗｸﾞ
+flg_step	.ds.b	1		* STEP 変更 ﾌﾗｸﾞ
+flg_pbend	.ds.b	1		* PITCH BEND 変更 ﾌﾗｸﾞ
+flg_vol		.ds.b	1		* VOLUME 変更 ﾌﾗｸﾞ
+flg_prg		.ds.b	1		* PROGRAM 変更　ﾌﾗｸﾞ
+flg_panpot	.ds.b	1		* PANPOT 変更 ﾌﾗｸﾞ
+flg_midich	.ds.b	1		* MIDI CH 変更 ﾌﾗｸﾞ
+flg_song	.ds.b	1		* SONG ﾃﾞｰﾀ ﾌﾗｸﾞ
+flg_system	.ds.b	1		* SYSTEM ｴﾘｱ変更ﾌﾗｸﾞ	* *(v2.80)
+
+panel_tempo	.ds.l	1		* パネル上のテンポ値
+bar		.ds.l	TRK_NUM		* 小節番号
+step		.ds.l	TRK_NUM		* ステップ番号
+vel		.ds.b	TRK_NUM		* ベロシティ値
+
+*ここから後は、32ch.に対応させるために、RCD v2.92以前とはアドレスがずれてます。TURBO
+
+stepcount	.ds.l	1		* 演奏開始時からのSTEP COUNT	* *(v2.92)
+
+flg_expres	.ds.b	1		* EXPRESSION 変更 ﾌﾗｸﾞ
+flg_modula	.ds.b	1		* MODULATION 変更 ﾌﾗｸﾞ
+flg_bank	.ds.b	1		* BANK 変更 ﾌﾗｸﾞ
+flg_replay	.ds.b	1		* REPLAY ﾌﾗｸﾞ
+flg_gssys	.ds.b	1		* GS SYSTEM ｴﾘｱ変更ﾌﾗｸﾞ	* (v2.93)
+flg_gsrev	.ds.b	1		* GSREV 変更 ﾌﾗｸﾞ	* (v2.93)
+flg_gscho	.ds.b	1		* GSCHO 変更 ﾌﾗｸﾞ	* (v2.93)
+
+dummyE		.ds.b	22-7		* 拡張用リザーブ
+
+song		.ds.b	20		* SONGデータ(コメント)
+
+ch_port		.ds.b	CHL_NUM		* ﾁｬﾈﾙ毎のi.f.種類 1:MIDI 2:RS-232C
+ch_part		.ds.b	CHL_NUM		* ﾁｬﾈﾙ毎の音源種類 0:LA 1:PCM 2:他(RHYTHM)
+ch_pbend	.ds.l	CHL_NUM		* ﾁｬﾈﾙ毎のPITCH BEND値
+ch_vol		.ds.b	CHL_NUM		* ﾁｬﾈﾙ毎のVOLUME値
+ch_panpot	.ds.b	CHL_NUM		* ﾁｬﾈﾙ毎のPANPOT値
+ch_prg		.ds.b	CHL_NUM		* ﾁｬﾈﾙ毎のPROGRAM番号
+ch_reverb	.ds.b	CHL_NUM		* リバーブ OFF/ON	* (v2.80)
+ch_expr		.ds.b	CHL_NUM		* ﾁｬﾈﾙ毎のEXPRSSION値	* v2.92
+ch_modu		.ds.b	CHL_NUM		* ﾁｬﾈﾙ毎のMODULATION値	* v2.92
+ch_bank		.ds.b	CHL_NUM		* ﾁｬﾈﾙ毎のBANK値	* v2.92
+ch_gsrev	.ds.b	CHL_NUM		* ﾁｬﾈﾙ毎のGS REVERB値	* v2.93
+ch_gscho	.ds.b	CHL_NUM		* ﾁｬﾈﾙ毎のGS CHORUS値	* v2.93
+
+dummyF		.ds.b	34*4		* 拡張用リザーブ
+
+		.text
+
