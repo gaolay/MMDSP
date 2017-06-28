@@ -30,7 +30,7 @@ PNL_LX		.ds.w	1			*パネルのx方向の大きさ
 PNL_LY		.ds.w	1			*   〃   y     〃
 PNL_MAKE	.ds.w	1			*パネル描画関数
 PNL_EVENT	.ds.w	1			*イベント処理関数
-PNL_DRUG	.ds.w	1			*ドラッグ処理関数
+PNL_DRAG	.ds.w	1			*ドラッグ処理関数
 		.text
 
 
@@ -121,7 +121,7 @@ panel_event10:
 		jsr	(a3,d0.w)
 		tst.l	d0
 		beq	panel_event90
-		move.l	a3,DRUG_FUNC(a6)		*ドラッグ処理関数を登録する
+		move.l	a3,DRAG_FUNC(a6)		*ドラッグ処理関数を登録する
 
 panel_event90:
 		movem.l	(sp)+,d0-d2/a0-a3
@@ -133,26 +133,26 @@ panel_event90:
 *	マウスがドラッグされた時の処理をする
 *==================================================
 
-PANEL_DRUG:
+PANEL_DRAG:
 		movem.l	d0-d2/a0,-(sp)
 
 		move.w	MOUSE_X(a6),d1
 		move.w	MOUSE_Y(a6),d2
-		move.l	DRUG_FUNC(a6),d0
-		beq	panel_drug90
+		move.l	DRAG_FUNC(a6),d0
+		beq	panel_drag90
 		movea.l	d0,a0
 
 		tst.w	PNL_ACT(a0)		*有効チェック
-		beq	panel_drug10
+		beq	panel_drag10
 		sub.w	PNL_X(a0),d1
 		sub.w	PNL_Y(a0),d2
-		move.w	PNL_DRUG(a0),d0
+		move.w	PNL_DRAG(a0),d0
 		jsr	(a0,d0.w)
 		tst.l	d0
-		bne	panel_drug90
-panel_drug10:
-		clr.l	DRUG_FUNC(a6)		*ドラッグ処理関数を解除
-panel_drug90:
+		bne	panel_drag90
+panel_drag10:
+		clr.l	DRAG_FUNC(a6)		*ドラッグ処理関数を解除
+panel_drag90:
 		movem.l	(sp)+,d0-d2/a0
 		rts
 
@@ -190,7 +190,7 @@ CONSOLE_PANEL:
 		.dc.w	26
 		.dc.w	CONS_MAKE-CONSOLE_PANEL
 		.dc.w	CONS_EVENT-CONSOLE_PANEL
-		.dc.w	CONS_DRUG-CONSOLE_PANEL
+		.dc.w	CONS_DRAG-CONSOLE_PANEL
 
 CONS_MAKE:
 		movea.l	#TXTADR+$80*28+34,a0
@@ -326,21 +326,21 @@ get_conscmd80:
 get_conscmd90:
 		rts
 
-CONS_DRUG:
+CONS_DRAG:
 		tst.w	MOUSE_L(a6)		*ボタンが押されていたら、
-		beq	cons_drug_end
+		beq	cons_drag_end
 		TIME_PASS			*0.05secごとに
 		cmpi.w	#05,d0
-		bls	cons_drug90
+		bls	cons_drag90
 		move.w	PANEL_WORK(a6),d0	*スキップ／スローをかけ直す
 		moveq	#1,d1
 		bsr	ENTER_CMD
 		TIME_SET
-cons_drug90:
+cons_drag90:
 		moveq	#1,d0
 		rts
 
-cons_drug_end:
+cons_drag_end:
 		move.w	PANEL_WORK(a6),d0	*ボタンが離されたら、解除
 		moveq	#0,d1
 		bsr	ENTER_CMD
@@ -360,7 +360,7 @@ GRAPH_PANEL:
 		.dc.w	10
 		.dc.w	GRAPH_MAKE-GRAPH_PANEL
 		.dc.w	GRAPH_EVENT-GRAPH_PANEL
-		.dc.w	GRAPH_DRUG-GRAPH_PANEL
+		.dc.w	GRAPH_DRAG-GRAPH_PANEL
 
 GRAPH_MAKE:
 		move.l	a1,-(sp)
@@ -423,14 +423,14 @@ graph_event80:
 graph_event90:
 		rts
 
-GRAPH_DRUG:
+GRAPH_DRAG:
 		moveq	#1,d0
 		tst.w	MOUSE_LC(a6)
-		beq	GRAPH_DRUG90
+		beq	GRAPH_DRAG90
 		moveq	#0,d1
 		bsr	SET_GMODE
 		moveq	#0,d0
-GRAPH_DRUG90:
+GRAPH_DRAG90:
 		rts
 
 
@@ -482,7 +482,7 @@ SPEASNS_PANEL:
 		.dc.w	39
 		.dc.w	SPEASNS_MAKE-SPEASNS_PANEL
 		.dc.w	SPEASNS_EVENT-SPEASNS_PANEL
-		.dc.w	SPEASNS_DRUG-SPEASNS_PANEL
+		.dc.w	SPEASNS_DRAG-SPEASNS_PANEL
 
 SPEASNS_MAKE:
 		movea.l	#BGADR+28*2+$80*21,a0
@@ -513,18 +513,18 @@ speasns_event10:
 		moveq	#1,d0
 		rts
 
-SPEASNS_DRUG:
+SPEASNS_DRAG:
 		moveq	#0,d0
 		tst.b	MOUSE_L(a6)
-		beq	speasns_drug90
+		beq	speasns_drag90
 		move.w	d2,d1
 		lsr.w	#2,d1
 		cmp.b	SPEA_RANGE(a6),d1
-		beq	speasns_drug80
+		beq	speasns_drag80
 		bsr	SPEASNS_SET
-speasns_drug80:
+speasns_drag80:
 		moveq	#1,d0
-speasns_drug90:
+speasns_drag90:
 		rts
 
 
@@ -540,7 +540,7 @@ LEVELSNS_PANEL:
 		.dc.w	39
 		.dc.w	LEVELSNS_MAKE-LEVELSNS_PANEL
 		.dc.w	LEVELSNS_EVENT-LEVELSNS_PANEL
-		.dc.w	LEVELSNS_DRUG-LEVELSNS_PANEL
+		.dc.w	LEVELSNS_DRAG-LEVELSNS_PANEL
 
 LEVELSNS_MAKE:
 		movea.l	#BGADR+28*2+$80*30,a0
@@ -558,18 +558,18 @@ levelsns_event10:
 		moveq	#1,d0
 		rts
 
-LEVELSNS_DRUG:
+LEVELSNS_DRAG:
 		moveq	#0,d0
 		tst.b	MOUSE_L(a6)
-		beq	levelsns_drug90
+		beq	levelsns_drag90
 		move.w	d2,d1
 		lsr.w	#2,d1
 		cmp.b	LEVEL_RANGE(a6),d1
-		beq	levelsns_drug80
+		beq	levelsns_drag80
 		bsr	LEVELSNS_SET
-levelsns_drug80:
+levelsns_drag80:
 		moveq	#1,d0
-levelsns_drug90:
+levelsns_drag90:
 		rts
 
 
@@ -585,7 +585,7 @@ TRMASK_KB_PANEL:
 		.dc.w	318
 		.dc.w	0
 		.dc.w	TRMASK_KB_EVENT-TRMASK_KB_PANEL
-		.dc.w	TRMASK_KB_DRUG-TRMASK_KB_PANEL
+		.dc.w	TRMASK_KB_DRAG-TRMASK_KB_PANEL
 
 TRMASK_KB_EVENT:
 		moveq	#0,d0
@@ -601,23 +601,23 @@ TRMASK_KB_EVENT:
 trmask_kb_event90:
 		rts
 
-TRMASK_KB_DRUG:
+TRMASK_KB_DRAG:
 		moveq	#0,d0
 		tst.w	MOUSE_L(a6)
-		beq	trmask_kb_drug90
+		beq	trmask_kb_drag90
 		ext.l	d2
 		divu	#40,d2
 		move.w	d2,d1
 		add.b	KEYB_TROFST(a6),d1
 		cmpi.w	#31,d1
-		bhi	trmask_kb_drug80
+		bhi	trmask_kb_drag80
 		cmp.w	PANEL_WORK(a6),d1
-		beq	trmask_kb_drug80
+		beq	trmask_kb_drag80
 		move.w	d1,PANEL_WORK(a6)
 		ENTER	CMD_TRMASK_CHG
-trmask_kb_drug80:
+trmask_kb_drag80:
 		moveq	#1,d0
-trmask_kb_drug90:
+trmask_kb_drag90:
 		rts
 
 
@@ -633,7 +633,7 @@ TRACKMASK_PANEL:
 		.dc.w	16
 		.dc.w	0
 		.dc.w	TRMASK_EVENT-TRACKMASK_PANEL
-		.dc.w	TRMASK_DRUG-TRACKMASK_PANEL
+		.dc.w	TRMASK_DRAG-TRACKMASK_PANEL
 
 TRMASK_EVENT:
 		sub.w	#28,d1			*マスク一括ON/OFF/REV
@@ -662,23 +662,23 @@ trmask_event20:
 trmask_event90:
 		rts
 
-TRMASK_DRUG:
+TRMASK_DRAG:
 		moveq	#0,d0
 		tst.w	MOUSE_L(a6)
-		beq	trmask_drug90
+		beq	trmask_drag90
 
 		sub.w	#28,d1
 		lsr.w	#4,d1
 		add.b	LEVEL_TROFST(a6),d1
 		cmpi.w	#31,d1
-		bhi	trmask_drug80
+		bhi	trmask_drag80
 		cmp.w	PANEL_WORK(a6),d1
-		beq	trmask_drug80
+		beq	trmask_drag80
 		move.w	d1,PANEL_WORK(a6)
 		ENTER	CMD_TRMASK_CHG
-trmask_drug80:
+trmask_drag80:
 		moveq	#1,d0
-trmask_drug90:
+trmask_drag90:
 		rts
 
 
@@ -694,7 +694,7 @@ KEYBD_PANEL:
 		.dc.w	318
 		.dc.w	0
 		.dc.w	KEYBD_EVENT-KEYBD_PANEL
-		.dc.w	KEYBD_DRUG-KEYBD_PANEL
+		.dc.w	KEYBD_DRAG-KEYBD_PANEL
 
 KEYBD_EVENT:
 		bsr	slide_keybd
@@ -702,17 +702,17 @@ KEYBD_EVENT:
 		moveq	#1,d0
 		rts
 
-KEYBD_DRUG:
+KEYBD_DRAG:
 		moveq	#0,d0
 		tst.w	MOUSE_L(a6)
-		beq	keybd_drug90
+		beq	keybd_drag90
 		TIME_PASS
 		cmpi.w	#25,d0			*リピート間隔0.25sec
-		bls	keybd_drug80
+		bls	keybd_drag80
 		bsr	slide_keybd
-keybd_drug80:
+keybd_drag80:
 		moveq	#1,d0
-keybd_drug90:
+keybd_drag90:
 		rts
 
 slide_keybd:
@@ -737,7 +737,7 @@ LEVEL_PANEL:
 		.dc.w	56
 		.dc.w	0
 		.dc.w	LEVEL_EVENT-LEVEL_PANEL
-		.dc.w	LEVEL_DRUG-LEVEL_PANEL
+		.dc.w	LEVEL_DRAG-LEVEL_PANEL
 
 LEVEL_EVENT:
 		moveq	#CMD_LEVELPOS_DOWN,d0
@@ -750,22 +750,22 @@ level_event20:
 		moveq	#1,d0
 		rts
 
-LEVEL_DRUG:
+LEVEL_DRAG:
 		moveq	#0,d0
 		tst.w	MOUSE_L(a6)
-		beq	level_drug90
+		beq	level_drag90
 		TIME_PASS
 		cmpi.w	#25,d0			*リピート間隔0.25sec
-		bls	level_drug80
+		bls	level_drag80
 		moveq	#CMD_LEVELPOS_DOWN,d0
 		tst.b	MOUSE_L(a6)
-		bne	level_drug10
+		bne	level_drag10
 		moveq	#CMD_LEVELPOS_UP,d0
-level_drug10:
+level_drag10:
 		bsr	ENTER_CMD
-level_drug80:
+level_drag80:
 		moveq	#1,d0
-level_drug90:
+level_drag90:
 		rts
 
 
@@ -836,7 +836,7 @@ SEL_PANEL:
 		.dc.w	154
 		.dc.w	0
 		.dc.w	SEL_EVENT-SEL_PANEL
-		.dc.w	SEL_DRUG-SEL_PANEL
+		.dc.w	SEL_DRAG-SEL_PANEL
 
 SEL_EVENT:
 		subi.w	#12,d2			*タイトルエリア左側の場合
@@ -918,22 +918,22 @@ sel_eject:
 		moveq	#0,d0
 		rts
 
-SEL_DRUG:
+SEL_DRAG:
 		moveq	#0,d0
 		tst.w	MOUSE_L(a6)
-		beq	sel_drug90
+		beq	sel_drag90
 *		TIME_PASS
 *		cmpi.w	#10,d0			*リピート間隔0.10sec
-*		bls	sel_drug80
+*		bls	sel_drag80
 		moveq	#CMD_NEXT_LINE,d0
 		tst.b	MOUSE_L(a6)
-		bne	sel_drug10
+		bne	sel_drag10
 		moveq	#CMD_PREV_LINE,d0
-sel_drug10:
+sel_drag10:
 		bsr	ENTER_CMD
-sel_drug80:
+sel_drag80:
 		moveq	#1,d0
-sel_drug90:
+sel_drag90:
 		rts
 
 
@@ -950,7 +950,7 @@ SELAUTO_PANEL:
 		.dc.w	16
 		.dc.w	0
 		.dc.w	SELAUTO_EVENT-SELAUTO_PANEL
-		.dc.w	SELAUTO_DRUG-SELAUTO_PANEL
+		.dc.w	SELAUTO_DRAG-SELAUTO_PANEL
 
 SELAUTO_EVENT:
 		cmpi.w	#61*8,d1
@@ -978,7 +978,7 @@ SELAUTO_EVENT:
 selat_event90:
 		moveq	#0,d0
 		rts
-selat_event_drug:
+selat_event_drag:
 		TIME_SET
 		moveq	#1,d0
 		rts
@@ -1016,28 +1016,28 @@ selat_prog:
 selat_looptime:
 		clr.w	PANEL_WORK(a6)
 		bsr	selauto_time
-		bra	selat_event_drug
+		bra	selat_event_drag
 
 selat_blanktime:
 		move.w	#1,PANEL_WORK(a6)
 		bsr	selauto_time
-		bra	selat_event_drug
+		bra	selat_event_drag
 
 selat_introtime:
 		move.w	#2,PANEL_WORK(a6)
 		bsr	selauto_time
-		bra	selat_event_drug
+		bra	selat_event_drag
 
-SELAUTO_DRUG:
+SELAUTO_DRAG:
 		moveq	#0,d1
 		tst.w	MOUSE_L(a6)		*マウスが離されていたら終わる
-		beq	selauto_drug90
+		beq	selauto_drag90
 		moveq	#1,d1
 		TIME_PASS
 		cmpi.w	#30,d0			*リピート間隔0.30sec
-		bls	selauto_drug90
+		bls	selauto_drag90
 		bsr	selauto_time		*数値上下
-selauto_drug90:
+selauto_drag90:
 		move.l	d1,d0
 		rts
 
@@ -1076,7 +1076,7 @@ GTONE_PANEL:
 		.dc.w	8
 		.dc.w	GTONE_MAKE-GTONE_PANEL
 		.dc.w	GTONE_EVENT-GTONE_PANEL
-		.dc.w	GTONE_DRUG-GTONE_PANEL
+		.dc.w	GTONE_DRAG-GTONE_PANEL
 
 GTONE_MAKE:
 		move.l	a1,-(sp)
@@ -1101,13 +1101,13 @@ GTONE_EVENT:
 		moveq	#1,d0
 		rts
 
-GTONE_DRUG:
+GTONE_DRAG:
 		moveq	#0,d0
 		tst.w	MOUSE_L(a6)
-		beq	gtone_drug90
+		beq	gtone_drag90
 		bsr	gtone_move
 		moveq	#1,d0
-gtone_drug90:
+gtone_drag90:
 		rts
 
 gtone_move:
@@ -1133,7 +1133,7 @@ PALET_PANEL:
 		.dc.w	20
 		.dc.w	PALET_MAKE-PALET_PANEL
 		.dc.w	PALET_EVENT-PALET_PANEL
-		.dc.w	PALET_DRUG-PALET_PANEL
+		.dc.w	PALET_DRAG-PALET_PANEL
 
 PALET_MAKE:
 		movea.l	#BGADR+44*2+12*$80,a0
@@ -1166,7 +1166,7 @@ palet_event90:
 		bsr	read_palet
 		moveq	#0,d0
 		rts
-palet_event_drug:
+palet_event_drag:
 		TIME_SET
 		moveq	#1,d0
 		rts
@@ -1184,20 +1184,20 @@ palet_change:
 palet_change10:
 		move.w	d0,PANEL_WORK(a6)
 		bsr	move_palet
-		bra	palet_event_drug
+		bra	palet_event_drag
 
 
-PALET_DRUG:
+PALET_DRAG:
 		moveq	#0,d0
 		tst.w	MOUSE_L(a6)
-		beq	palet_drug_end
+		beq	palet_drag_end
 		TIME_PASS
 		cmpi.w	#25,d0			*リピート間隔0.25sec
-		bls	palet_drug90
+		bls	palet_drag90
 		bsr	move_palet
-palet_drug90:
+palet_drag90:
 		moveq	#1,d0
-palet_drug_end:
+palet_drag_end:
 		rts
 
 

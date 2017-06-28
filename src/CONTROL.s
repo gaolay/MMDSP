@@ -129,9 +129,9 @@ control_key10:
 		move.w	d0,NOWKEY(a6)
 		bra	control_key10
 control_key20:
-		tst.w	DRUG_KEY(a6)		*ドラッグ中ならドラッグ処理をする
+		tst.w	DRAG_KEY(a6)		*ドラッグ中ならドラッグ処理をする
 		beq	control_key30
-		bsr	exec_drug
+		bsr	exec_drag
 		bra	control_key90
 control_key30:
 		move.w	NOWKEY(a6),d1		*そうでないならキーコマンドを実行する
@@ -219,24 +219,24 @@ check_shift10:
 *	a0.l <- ドラッグ解除時に呼ばれるルーチン(ないなら0)
 *==================================================
 
-set_drugmode:
+set_dragmode:
 		move.l	d1,-(sp)
-		move.l	DRUG_OFFFUNC(a6),d1	*ドラッグ中のキーが有ったら
-		beq	set_drugmode10
+		move.l	DRAG_OFFFUNC(a6),d1	*ドラッグ中のキーが有ったら
+		beq	set_dragmode10
 		movem.l	d0/a0,-(sp)
 		movea.l	d1,a0			*解除ルーチンを呼ぶ
 		jsr	(a0)
 		movem.l	(sp)+,d0/a0
-set_drugmode10:
-		clr.w	DRUG_KEY(a6)		*初期化しておく
-		clr.l	DRUG_ONFUNC(a6)
-		clr.l	DRUG_OFFFUNC(a6)
+set_dragmode10:
+		clr.w	DRAG_KEY(a6)		*初期化しておく
+		clr.l	DRAG_ONFUNC(a6)
+		clr.l	DRAG_OFFFUNC(a6)
 		move.w	NOWKEY(a6),d1		*今のキーが有効だったら
-		ble	set_drugmode90
-		move.w	d1,DRUG_KEY(a6)		*モードをセットする
-		move.l	d0,DRUG_ONFUNC(a6)
-		move.l	a0,DRUG_OFFFUNC(a6)
-set_drugmode90:
+		ble	set_dragmode90
+		move.w	d1,DRAG_KEY(a6)		*モードをセットする
+		move.l	d0,DRAG_ONFUNC(a6)
+		move.l	a0,DRAG_OFFFUNC(a6)
+set_dragmode90:
 		move.l	(sp)+,d1
 		rts
 
@@ -245,32 +245,32 @@ set_drugmode90:
 *ドラッグモードの処理
 *==================================================
 
-exec_drug:
+exec_drag:
 		movem.l	d0-d1/a0,-(sp)
-		move.b	DRUG_KEY(a6),d0		*キーが押されているか調べる
-		beq	exec_drug90
+		move.b	DRAG_KEY(a6),d0		*キーが押されているか調べる
+		beq	exec_drag90
 		andi.w	#$007f,d0
 		move.w	d0,d1
 		lsr.w	#3,d1
 		andi.w	#7,d0
 		lea	IOCSKEY.w,a0
 		btst.b	d0,(a0,d1.w)
-		beq	exec_drug10
-		move.l	DRUG_ONFUNC(a6),d0	*押されていたら
-		beq	exec_drug90
+		beq	exec_drag10
+		move.l	DRAG_ONFUNC(a6),d0	*押されていたら
+		beq	exec_drag90
 		movea.l	d0,a0
 		jsr	(a0)			*ドラッグ中実行ルーチンを呼ぶ
-		bra	exec_drug90
-exec_drug10:
-		move.l	DRUG_OFFFUNC(a6),d0	*離されていたら
-		beq	exec_drug20
+		bra	exec_drag90
+exec_drag10:
+		move.l	DRAG_OFFFUNC(a6),d0	*離されていたら
+		beq	exec_drag20
 		movea.l	d0,a0
 		jsr	(a0)			*ドラッグ終了ルーチンを呼び
-exec_drug20:
-		clr.w	DRUG_KEY(a6)		*ドラッグワークをクリアする
-		clr.l	DRUG_ONFUNC(a6)
-		clr.l	DRUG_OFFFUNC(a6)
-exec_drug90:
+exec_drag20:
+		clr.w	DRAG_KEY(a6)		*ドラッグワークをクリアする
+		clr.l	DRAG_ONFUNC(a6)
+		clr.l	DRAG_OFFFUNC(a6)
+exec_drag90:
 		movem.l	(sp)+,d0-d1/a0
 		rts
 
@@ -490,7 +490,7 @@ EXEC_NEXT_LINE_K:
 		moveq	#0,d0
 		lea	exec_next_linek1(pc),a0
 		exg	a0,d0
-		bra	set_drugmode
+		bra	set_dragmode
 exec_next_linek1:
 		TIME_PASS			*0.05secごとに
 		cmp.w	CONTROL_WORK(a6),d0
@@ -508,7 +508,7 @@ EXEC_PREV_LINE_K:
 		moveq	#0,d0
 		lea	exec_prev_linek1(pc),a0
 		exg	a0,d0
-		bra	set_drugmode
+		bra	set_dragmode
 exec_prev_linek1:
 		TIME_PASS			*0.05secごとに
 		cmp.w	CONTROL_WORK(a6),d0
@@ -589,7 +589,7 @@ EXEC_SKIPK:
 		lea	exec_skipk1(pc),a0
 		move.l	a0,d0
 		lea	exec_skipk0(pc),a0
-		bra	set_drugmode
+		bra	set_dragmode
 exec_skipk0:
 		moveq	#0,d0
 		DRIVER	DRIVER_SKIP
@@ -616,7 +616,7 @@ EXEC_SLOWK:
 		lea	exec_slowk1(pc),a0
 		move.l	a0,d0
 		lea	exec_slowk0(pc),a0
-		bra	set_drugmode
+		bra	set_dragmode
 exec_slowk0:
 		moveq	#0,d0
 		DRIVER	DRIVER_SLOW
