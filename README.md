@@ -6,10 +6,10 @@ It is a real time display & file selector that supports various music drivers th
 
 MMDSP supports six types of music drivers: MXDRV, MADRV, MCDRV, RCD, MLD, and ZMUSIC.
 
-You can enjoy functions such as semi-transparency of the background graphic screen (512 * 512 65536 color mode), partial transparency (by GRAM bit 15), and so on.
+You can enjoy functions such as semi-transparency of the background graphic screen (512 * 512 65536 color mode), partial transparency (by GVRAM bit0), and so on.
 
 MMDSP has continuous playback function.
-You can enjoy auto / random / simple program play easily without creating a data file.
+You can enjoy auto / random / simple program play easily without creating any data files.
 
 You can reside and call it at any time with XF4 + XF5 key. (Specified on the command line)
 
@@ -25,4 +25,4 @@ MMDSP is characterized by a realistic movement spectrum analyzer, but when you p
 
 ## 2.make
 
-    A\> make
+    A:\> make
