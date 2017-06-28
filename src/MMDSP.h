@@ -137,7 +137,7 @@ MYONTIME	.macro
 *PANEL.S
 		.global		PANEL_MAKE
 		.global		PANEL_EVENT
-		.global		PANEL_DRUG
+		.global		PANEL_DRAG
 *CONTROL.S
 		.global		CONTROL
 		.global		ENTER_CMD
@@ -395,9 +395,9 @@ VDISP_CNT:	.ds.w	1	*割り込み回数カウンタ
 MMDSP_CMD:	.ds.w	1	*MMDSPコマンドバッファ
 CMD_ARG:	.ds.l	1	*コマンド引数
 QUIT_FLAG:	.ds.w	1	*ＭＭＤＳＰ終了フラグ
-DRUG_KEY:	.ds.w	1	*ドラッグされているキーコード
-DRUG_ONFUNC:	.ds.l	1	*ドラッグ中に呼ばれるルーチン
-DRUG_OFFFUNC:	.ds.l	1	*ドラッグ解除時に呼ばれるルーチン
+DRAG_KEY:	.ds.w	1	*ドラッグされているキーコード
+DRAG_ONFUNC:	.ds.l	1	*ドラッグ中に呼ばれるルーチン
+DRAG_OFFFUNC:	.ds.l	1	*ドラッグ解除時に呼ばれるルーチン
 CONTROL_ONTIME:	.ds.w	1	*時間計測用
 CONTROL_WORK:	.ds.w	1	*時間計測用
 HOTKEY1:	.ds.b	1	*起動キー1のコード
@@ -430,9 +430,9 @@ MOUSE_L:	.ds.b	1	*左ボタン状態(on:$FF off:$00)
 MOUSE_R:	.ds.b	1	*右ボタン状態(on:$FF off:$00)
 MOUSE_LC:	.ds.b	1	*左ボタンクリックフラグ(click:$FF no change:$00)
 MOUSE_RC:	.ds.b	1	*右ボタンクリックフラグ(click:$FF no change:$00)
-DRUG_FUNC:	.ds.l	1	*ドラッグ処理関数のアドレス
+DRAG_FUNC:	.ds.l	1	*ドラッグ処理関数のアドレス
 PANEL_ONTIME:	.ds.w	1	*PANEL.s用
-PANEL_WORK:	.ds.l	1	*汎用ワーク（主にDRUG関数内で使用）
+PANEL_WORK:	.ds.l	1	*汎用ワーク（主にDRAG関数内で使用）
 
 *テキスト画面関係 --------------------
 TX_ACM:		.ds.w	1	*テキストアクセスモード保存用

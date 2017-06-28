@@ -42,7 +42,7 @@ MOUSE_INIT:
 *		moveq	#0,d0
 *		move.l	d0,MOUSE_L(a6)
 
-		clr.l	DRUG_FUNC(a6)
+		clr.l	DRAG_FUNC(a6)
 
 		movem.l	(sp)+,d0-d2
 		rts
@@ -158,9 +158,9 @@ MOUSE_MOVE:
 .endif
 
 ms_move10:
-		tst.l	DRUG_FUNC(a6)		*ドラッグ中ならば、
+		tst.l	DRAG_FUNC(a6)		*ドラッグ中ならば、
 		beq	ms_move20
-		bsr	PANEL_DRUG		*ドラッグ処理関数を呼び出す
+		bsr	PANEL_DRAG		*ドラッグ処理関数を呼び出す
 		bra	ms_move90
 
 ms_move20:
