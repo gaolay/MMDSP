@@ -1,7 +1,7 @@
 # MMDSP
 multi music status display MMDSP
 
-This program was named MMDSP (Multi Music Status Display & Selector).
+This program was named MMDSP (Multi Music status Displayer / Selector / Player).
 It is a real time display & file selector that supports various music drivers that run on SHARP X68000.
 
 MMDSP supports six types of music drivers: MXDRV, MADRV, MCDRV, RCD, MLD, and ZMUSIC.
