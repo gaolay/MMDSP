@@ -16,6 +16,7 @@ You can reside and call it at any time with XF4 + XF5 key. (Specified on the com
 MMDSP is characterized by a realistic movement spectrum analyzer, but when you play PCM8 compatible data on a 10 MHz model, the operation may be slightly heavy depending on the data.
 
 <img src="https://user-images.githubusercontent.com/320167/27649690-79370cc2-5c6d-11e7-8b16-0b612150564f.png">
+<a href="https://www.youtube.com/results?search_query=MMDSP">Also, there are some MMDSP videos on Youtube.</a>
 
 # How to build
 
